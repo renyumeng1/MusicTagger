@@ -85,7 +85,7 @@ class MetadataWidget(QWidget, Ui_MetadataWidget):
         self.api_mode = ApiMode(0)
         self.is_rename = False
         self.is_lrc = False
-        self.result_pic_label.setScaledContents(True)
+        # self.result_pic_label.setScaledContents(True)
         self._load_config()
 
     def _load_config(self):
@@ -474,7 +474,8 @@ class MetadataWidget(QWidget, Ui_MetadataWidget):
                     if q_img.isNull():
                         raise ValueError("无法加载图片数据")
                     pix = QPixmap.fromImage(q_img)
-                    self.result_pic_label.setPixmap(pix)
+                    self.result_pic_label.setPixmap(pix.scaled(
+                        self.result_pic_label.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
                 else:
                     self.result_pic_label.setText("无图片")
             except Exception as e:
@@ -627,7 +628,8 @@ class MetadataWidget(QWidget, Ui_MetadataWidget):
             q_img = QImage.fromData(pic_buffer.getvalue())
             if not q_img.isNull():
                 pix = QPixmap.fromImage(q_img)
-                self.original_pic_label.setPixmap(pix)
+                self.original_pic_label.setPixmap(
+                    pix.scaled(self.original_pic_label.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
                 self.original_pic_label.setStyleSheet("")  # 样式由QSS控制
             else:
                 self.original_pic_label.setText("图片无效")
